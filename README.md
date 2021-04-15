@@ -4,7 +4,7 @@ Comparing different active learning strategies for image classification (FSDL co
 
 ## Introduction
 
-This repository build upon the template of the [Full Stack Deep Learning Spring 2021 labs](https://github.com/full-stack-deep-learning/fsdl-text-recognizer-2021-labs) and extends them with a new dataset, model and active learning strategies.
+This repository builds upon the template of **lab 08** of the [Full Stack Deep Learning Spring 2021 labs](https://github.com/full-stack-deep-learning/fsdl-text-recognizer-2021-labs) and extends it with a new dataset, model and active learning strategies.
 
 ## Relevant Changes Compared to Lab Template
 

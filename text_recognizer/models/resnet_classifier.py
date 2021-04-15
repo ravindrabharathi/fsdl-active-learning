@@ -21,7 +21,7 @@ class ResnetClassifier(nn.Module):
         pretrained = self.args.get("pretrained", PRETRAINED)
 
         # base ResNet model
-        self.resnet = torchvision.models.resnet18(pretrained=pretrained)
+        self.resnet = torchvision.models.resnet50(pretrained=pretrained)
 
         # preprocessing steps to resize images (adapted from https://pytorch.org/hub/pytorch_vision_resnet/)
         new_channel_mean = 0.485 # from existing channel 0

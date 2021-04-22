@@ -124,6 +124,12 @@ def main():
             print("Best model also uploaded to W&B")
     # Hide lines above until Lab 5
 
+    #predcit on test set 
+    
+    pred=trainer.predict(model=lit_model, test_dataloaders=DataLoader(data.data_test))
+    print(pred)
+    print(pred.shape)
+
 
 if __name__ == "__main__":
     main()

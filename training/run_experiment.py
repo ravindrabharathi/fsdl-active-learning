@@ -126,10 +126,22 @@ def main():
     # Hide lines above until Lab 5
 
     #predcit on test set 
+    '''
     print('Prediction on test set ')
     pred=trainer.predict(model=lit_model, dataloaders=DataLoader(data.data_test))
     print('Pred : ', pred)
     print('pred type :' , type(pred))
+    '''
+    import h5py
+    pred=[]
+    with h5py.File("data/processed/droughtwatch/pool.h5", "r") as f:
+            x_pool = f["x_pool"][:]
+            y_pool = f["y_pool"][:].squeeze().astype(int)
+    for image in x_pool:
+        pred.append(lit_model(image))
+    print(pred) 
+    print(len(pred),type(pred))   
+
 
 
 if __name__ == "__main__":

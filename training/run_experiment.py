@@ -6,6 +6,7 @@ import numpy as np
 import torch
 import pytorch_lightning as pl
 import wandb
+import h5py
 
 from text_recognizer import lit_models
 from torch.utils.data import ConcatDataset, DataLoader
@@ -132,7 +133,7 @@ def main():
     print('Pred : ', pred)
     print('pred type :' , type(pred))
     '''
-    import h5py
+    
     pred=[]
     with h5py.File("data/processed/droughtwatch/pool.h5", "r") as f:
             x_pool = f["x_pool"][:]

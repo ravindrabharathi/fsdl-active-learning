@@ -74,17 +74,17 @@ class DroughtWatch(BaseDataModule):
 
         self.data_train = BaseDataset(self.x_train, self.y_train, transform=self.transform)
         self.data_val = BaseDataset(self.x_val, self.y_val, transform=self.transform)
-        self.data_test = self.data_val # NOTE: the framework requires a test set, we just set it to the same as the validation set though
+        #self.data_test = self.data_val # NOTE: the framework requires a test set, we just set it to the same as the validation set though
     
         # pool of labeled samples from which to choose from via active learning
         # TODO: do something with this pool
         # NOTE: we might have to change how the pool is stored and read, otherwise Colab's memory is close to its' limit...
 
-        #with h5py.File(PROCESSED_DATA_FILE_POOL, "r") as f:
-        #    self.x_pool = f["x_pool"][:]
-        #    self.y_pool = f["y_pool"][:].squeeze().astype(int)
+        with h5py.File(PROCESSED_DATA_FILE_POOL, "r") as f:
+            self.x_pool = f["x_pool"][:]
+            self.y_pool = f["y_pool"][:].squeeze().astype(int)
 
-        #self.data_pool = BaseDataset(self.x_pool, self.y_pool, transform=self.transform) 
+        self.data_test = BaseDataset(self.x_pool, self.y_pool, transform=self.transform) 
 
 
     def __repr__(self):
@@ -228,7 +228,8 @@ def _process_raw_dataset(self, filename: str, dirname: Path):
             hf["y_pool"].resize((hf["y_pool"].shape[0] + y_pool.shape[0]), axis = 0)
             hf["y_pool"][-y_pool.shape[0]:] = y_pool
 
-
+    print(PROCESSED_DATA_FILE_POOL)
+    print(PROCESSED_DATA_FILE_TRAINVAL,PROCESSED_DATA_DIRNAME)
     print("Cleaning up...")
     shutil.rmtree("droughtwatch_data")
     os.chdir(curdir)

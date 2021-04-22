@@ -9,6 +9,7 @@ import wandb
 import h5py
 from PIL import Image
 
+
 from text_recognizer import lit_models
 from torch.utils.data import ConcatDataset, DataLoader
 
@@ -140,7 +141,7 @@ def main():
             x_pool = f["x_pool"][:]
             y_pool = f["y_pool"][:].squeeze().astype(int)
     for image in x_pool:
-        image=transforms.ToTensor()(image).unsqueeze_(0)
+        image=torch.from_numpy(image)#transforms.ToTensor()(image).unsqueeze_(0)
         pred.append(lit_model(image))
     print(pred) 
     print(len(pred),type(pred))   

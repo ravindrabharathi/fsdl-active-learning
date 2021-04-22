@@ -125,10 +125,10 @@ def main():
     # Hide lines above until Lab 5
 
     #predcit on test set 
-    
+    print('Prediction on test set ')
     pred=trainer.predict(model=lit_model, test_dataloaders=DataLoader(data.data_test))
-    print(pred)
-    print(pred.shape)
+    print('Pred : ', pred)
+    print('pred type :' , type(pred))
 
 
 if __name__ == "__main__":

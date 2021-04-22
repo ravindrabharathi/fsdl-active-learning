@@ -8,6 +8,7 @@ import pytorch_lightning as pl
 import wandb
 
 from text_recognizer import lit_models
+from torch.utils.data import ConcatDataset, DataLoader
 
 
 # In order to ensure reproducible experiments, we must set random seeds.

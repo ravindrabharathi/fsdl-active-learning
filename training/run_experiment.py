@@ -127,7 +127,7 @@ def main():
 
     #predcit on test set 
     print('Prediction on test set ')
-    pred=trainer.predict(model=lit_model, test_dataloaders=DataLoader(data.data_test))
+    pred=trainer.predict(model=lit_model, dataloaders=DataLoader(data.data_test))
     print('Pred : ', pred)
     print('pred type :' , type(pred))
 

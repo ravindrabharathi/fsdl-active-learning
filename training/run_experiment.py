@@ -7,6 +7,7 @@ import torch
 import pytorch_lightning as pl
 import wandb
 import h5py
+from PIL import Image
 
 from text_recognizer import lit_models
 from torch.utils.data import ConcatDataset, DataLoader
@@ -114,7 +115,7 @@ def main():
     trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate
 
     trainer.fit(lit_model, datamodule=data)
-    trainer.test(lit_model, datamodule=data)
+    #trainer.test(lit_model, datamodule=data)
     # pylint: enable=no-member
 
     # Hide lines below until Lab 5
@@ -139,6 +140,7 @@ def main():
             x_pool = f["x_pool"][:]
             y_pool = f["y_pool"][:].squeeze().astype(int)
     for image in x_pool:
+        image=Image.fromarray(image.astype('uint8'), 'RGB')
         pred.append(lit_model(image))
     print(pred) 
     print(len(pred),type(pred))   

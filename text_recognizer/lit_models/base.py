@@ -1,6 +1,7 @@
 import argparse
 import pytorch_lightning as pl
 import torch
+import numpy as np
 
 
 OPTIMIZER = "Adam"
@@ -91,12 +92,15 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         self.log("val_acc", self.val_acc, on_step=False, on_epoch=True, prog_bar=True)
 
     def reset_predictions(self):
-        self.predictions=[]    
+        self.predictions=np.array([])    
 
     def test_step(self, batch, batch_idx):  # pylint: disable=unused-argument
         x, y = batch
         logits = self(x)
-        print(logits)
-        self.predictions.append(logits)
+        print(type(logits),logits.shape,logits.size)
+        if self.predictions.shape[0]==0:
+            self.predictions=logits.cpu().detatch().numpy()
+        else:    
+            np.vstack(self.predictions,logits.cpu().detatch().numpy())
         self.test_acc(logits, y)
         self.log("test_acc", self.test_acc, on_step=False, on_epoch=True)

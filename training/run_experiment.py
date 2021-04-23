@@ -119,9 +119,9 @@ def main():
     lit_model.reset_predictions()
     trainer.test(lit_model, datamodule=data)
     print('predictions---------')
-    print(type(lit_model.predictions),len(lit_model.predictions))
+    print(type(lit_model.predictions),lit_model.predictions.shape))
     print('--------------')
-    print(lit_model.predictions)
+    print(lit_model.predictions[:10])
     
     print('------------------')
     # pylint: enable=no-member

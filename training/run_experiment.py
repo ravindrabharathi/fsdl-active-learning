@@ -116,7 +116,14 @@ def main():
     trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate
 
     trainer.fit(lit_model, datamodule=data)
-    #trainer.test(lit_model, datamodule=data)
+    lit_model.reset_predictions()
+    trainer.test(lit_model, datamodule=data)
+    print('predictions---------')
+    print(type(lit_model.predictions),len(lit_model.predictions))
+    print('--------------')
+    print(lit_model.predictions)
+    
+    print('------------------')
     # pylint: enable=no-member
 
     # Hide lines below until Lab 5
@@ -127,26 +134,6 @@ def main():
             wandb.save(best_model_path)
             print("Best model also uploaded to W&B")
     # Hide lines above until Lab 5
-
-    #predcit on test set 
-    '''
-    print('Prediction on test set ')
-    pred=trainer.predict(model=lit_model, dataloaders=DataLoader(data.data_test))
-    print('Pred : ', pred)
-    print('pred type :' , type(pred))
-    '''
-    
-    pred=[]
-    with h5py.File("data/processed/droughtwatch/pool.h5", "r") as f:
-            x_pool = f["x_pool"][:]
-            y_pool = f["y_pool"][:].squeeze().astype(int)
-    for image in x_pool:
-        image=torch.from_numpy(image)#transforms.ToTensor()(image).unsqueeze_(0)
-        pred.append(lit_model(image))
-    print(pred) 
-    print(len(pred),type(pred))   
-
-
 
 if __name__ == "__main__":
     main()

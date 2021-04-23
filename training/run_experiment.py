@@ -119,7 +119,7 @@ def main():
     lit_model.reset_predictions()
     trainer.test(lit_model, datamodule=data)
     print('predictions---------')
-    print(type(lit_model.predictions),lit_model.predictions.shape))
+    print(type(lit_model.predictions),lit_model.predictions.shape) 
     print('--------------')
     print(lit_model.predictions[:10])
     

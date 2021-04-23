@@ -97,10 +97,12 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
     def test_step(self, batch, batch_idx):  # pylint: disable=unused-argument
         x, y = batch
         logits = self(x)
-        print(type(logits),logits.shape,logits.size)
+        print('logits',type(logits),logits.shape,logits.size)
+        preds = torch.nn.functional.softmax(logits, dim=-1)
+        print('preds',type(preds),preds.shape,preds.size)
         if self.predictions.shape[0]==0:
-            self.predictions=logits.cpu().detatch().numpy()
+            self.predictions=preds.cpu().detatch().numpy()
         else:    
-            np.vstack(self.predictions,logits.cpu().detatch().numpy())
+            np.vstack(self.predictions,preds.cpu().detatch().numpy())
         self.test_acc(logits, y)
         self.log("test_acc", self.test_acc, on_step=False, on_epoch=True)

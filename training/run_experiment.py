@@ -124,7 +124,7 @@ def main():
 
     print('Total Unlabelled Pool Size ', data.get_ds_length())
     
-    random_indices= al_sampler.get_random_samples(pool_size=data.get_ds_length(),sample_size=10,)
+    random_indices= al_sampler.get_random_samples(pool_size=data.get_ds_length(),sample_size=20)
 
     print('Random indices for labelling : \n-----------------\n') 
     print(random_indices)
@@ -132,7 +132,7 @@ def main():
 
     # Get Least confidence samples 
     #pass predictions and sample size as args
-    least_confidence_samples=al_sampler.get_least_confidence_samples(predictions,sample_size=10)
+    least_confidence_samples=al_sampler.get_least_confidence_samples(predictions,sample_size=20)
 
     print('Least confidence query indices for labelling : \n-----------------\n') 
     print(least_confidence_samples) 
@@ -141,7 +141,7 @@ def main():
 
     # Get Top 2 Margin samples 
     #pass predictions and sample size as args
-    margin_samples=al_sampler.get_top2_confidence_margin_samples(predictions,sample_size=10) 
+    margin_samples=al_sampler.get_top2_confidence_margin_samples(predictions,sample_size=20) 
 
     print('Top2 confidence margin samples : \n-------------------\n')
     print(margin_samples)

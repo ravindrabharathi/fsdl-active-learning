@@ -124,7 +124,7 @@ def main():
 
     print('Total Unlabelled Pool Size ', data.get_ds_length())
     
-    random_indices= al_sampler.get_random_samples(pool_size=data.get_ds_length(),sample_size=10,)
+    random_indices= al_sampler.get_random_samples(pool_size=data.,sample_size=10,)
 
     print('Random indices for labelling : \n-----------------\n') 
     print(random_indices)

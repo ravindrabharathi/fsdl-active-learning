@@ -33,6 +33,6 @@ def get_top2_confidence_margin_samples(predictions, sample_size):
         indices.append(idx)
     margins=np.asarray(margins)
     indices=np.asarray(indices)
-    least_margin_indices=np.argsort(margins)[:sample_size]
+    least_margin_indices=indices[np.argsort(margins)][:sample_size]
   
     return least_margin_indices

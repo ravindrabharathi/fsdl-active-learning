@@ -128,13 +128,15 @@ def main():
 
     print('Random indices for labelling : \n-----------------\n') 
     print(random_indices)
+    print('\n-----------------\n') 
 
     # Get Least confidence samples 
     #pass predictions and sample size as args
     least_confidence_samples=al_sampler.get_least_confidence_samples(predictions,sample_size=10)
 
     print('Least confidence query indices for labelling : \n-----------------\n') 
-    print(least_confidence_samples)    
+    print(least_confidence_samples) 
+    print('\n-----------------\n')   
 
 
     # Get Top 2 Margin samples 
@@ -143,6 +145,7 @@ def main():
 
     print('Top2 confidence margin samples : \n-------------------\n')
     print(margin_samples)
+    print('\n-----------------\n')
 
 
 

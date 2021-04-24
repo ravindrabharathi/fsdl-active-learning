@@ -11,6 +11,7 @@ from PIL import Image
 
 
 from text_recognizer import lit_models
+from text_recognizer.data import al_sampler # for active learning sampling 
 from torch.utils.data import ConcatDataset, DataLoader
 
 
@@ -79,16 +80,8 @@ def main():
     data = data_class(args)
     model = model_class(data_config=data.config(), args=args)
 
-    if args.loss not in ("ctc", "transformer"):
-        lit_model_class = lit_models.BaseLitModel
-    # Hide lines below until Lab 3
-    if args.loss == "ctc":
-        lit_model_class = lit_models.CTCLitModel
-    # Hide lines above until Lab 3
-    # Hide lines below until Lab 4
-    if args.loss == "transformer":
-        lit_model_class = lit_models.TransformerLitModel
-    # Hide lines above until Lab 4
+    lit_model_class = lit_models.BaseLitModel
+    
 
     if args.load_checkpoint is not None:
         lit_model = lit_model_class.load_from_checkpoint(args.load_checkpoint, args=args, model=model)
@@ -116,14 +109,43 @@ def main():
     trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate
 
     trainer.fit(lit_model, datamodule=data)
+    #reset predictions array of model 
     lit_model.reset_predictions()
+    #run a test loop so that we can get the model predictions 
     trainer.test(lit_model, datamodule=data)
-    print('predictions---------')
-    print(type(lit_model.predictions),lit_model.predictions.shape) 
-    print('--------------')
-    print(lit_model.predictions[:10])
+    #get model predictions 
+    predictions = lit_model.predictions # maybe use a getPredictions method instead of referencing directly
+
+    # now you can get indices for samples to be labelled using the al_sampler methods 
+
+    # get random samples 
+    # sample_size is the number of samples you need for labelling
+    # pool_size is the size of the unlabelled pool size data.get_ds_length('unlabelled')
+
+    print('Total Unlabelled Pool Size ', data.get_ds_length())
     
-    print('------------------')
+    random_indices= al_sampler.get_random_sample(sample_size=10,pool_size=data.get_ds_length())
+
+    print('Random indices for labelling : \n-----------------\n') 
+    print(random_indices)
+
+    # Get Least confidence samples 
+    #pass predictions and sample size as args
+    least_confidence_samples=al_sampler.get_least_confidence_samples(predictions,sample_size=10)
+
+    print('Least confidence query indices for labelling : \n-----------------\n') 
+    print(least_confidence_samples)    
+
+
+    # Get Top 2 Margin samples 
+    #pass predictions and sample size as args
+    margin_samples=al_sampler.get_top2_confidence_margin_samples(predictions,sample_size=10) 
+
+    print('Top2 confidence margin samples : \n-------------------\n')
+    print(margin_samples)
+
+
+
     # pylint: enable=no-member
 
     # Hide lines below until Lab 5

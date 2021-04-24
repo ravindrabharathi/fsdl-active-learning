@@ -85,6 +85,7 @@ class DroughtWatch(BaseDataModule):
             self.y_pool = f["y_pool"][:].squeeze().astype(int)
 
         self.data_test = BaseDataset(self.x_pool, self.y_pool, transform=self.transform) 
+        self.data_unlabelled=BaseDataset(self.x_pool, self.y_pool, transform=self.transform)
         
 
 
@@ -235,6 +236,17 @@ def _process_raw_dataset(self, filename: str, dirname: Path):
     shutil.rmtree("droughtwatch_data")
     os.chdir(curdir)
 
+def get_ds_length(ds_name='unlabelled'):
+    if ds_name=='unlabelled':
+        return self.data_unlabelled.__len__
+    elif ds_name=='train':
+        return self.data_train.__len__
+    elif ds_name=='test' :
+        return self.data_test.__len__
+    elif ds_name=='val' :
+        return self.data_val.__len__ 
+    else:
+        raise NameError('Unknown Dataset Name '+ds_name)            
 
 if __name__ == "__main__":
     load_and_print_info(DroughtWatch)

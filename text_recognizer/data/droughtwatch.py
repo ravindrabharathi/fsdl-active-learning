@@ -94,6 +94,7 @@ class DroughtWatch(BaseDataModule):
         if self.data_train is None and self.data_val is None and self.data_test is None:
             return basic
 
+        # deepcode ignore unguarded~next~call: <please specify a reason of ignoring this>
         x, y = next(iter(self.train_dataloader()))
         data = (
             f"Train/val sizes: {len(self.data_train)}, {len(self.data_val)}\n"
@@ -105,13 +106,13 @@ class DroughtWatch(BaseDataModule):
 
     def get_ds_length(self,ds_name='unlabelled'):
         if ds_name=='unlabelled':
-            return self.data_unlabelled.__len__()
+            return len(self.data_unlabelled)
         elif ds_name=='train':
-            return self.data_train.__len__()
+            return len(self.data_train)
         elif ds_name=='test' :
-            return self.data_test.__len__()
+            return len(self.data_test)
         elif ds_name=='val' :
-            return self.data_val.__len__() 
+            return len(self.data_val) #.__len__() 
         else:
             raise NameError('Unknown Dataset Name '+ds_name) 
 

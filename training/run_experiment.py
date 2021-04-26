@@ -79,6 +79,7 @@ def main():
     model_class = _import_class(f"text_recognizer.models.{args.model_class}")
     data = data_class(args)
     model = model_class(data_config=data.config(), args=args)
+    sampling_method=args.sampling_method
 
     lit_model_class = lit_models.BaseLitModel
     
@@ -105,60 +106,78 @@ def main():
     args.weights_summary = "full"  # Print full summary of the model
     trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger, weights_save_path="training/logs")
 
-    # pylint: disable=no-member
-    trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate
+    while data.get_ds_length()>1000:
 
-    trainer.fit(lit_model, datamodule=data)
-    #reset predictions array of model 
-    lit_model.reset_predictions()
-    #run a test loop so that we can get the model predictions 
-    trainer.test(lit_model, datamodule=data)
-    #get model predictions 
-    predictions = lit_model.predictions # maybe use a getPredictions method instead of referencing directly
+        # pylint: disable=no-member
+        trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate
 
-    # now you can get indices for samples to be labelled using the al_sampler methods 
+        trainer.fit(lit_model, datamodule=data)
+        #reset predictions array of model 
+        lit_model.reset_predictions()
+        #run a test loop so that we can get the model predictions 
+        trainer.test(lit_model, datamodule=data)
+        #get model predictions 
+        predictions = lit_model.predictions # maybe use a getPredictions method instead of referencing directly
 
-    # get random samples 
-    # sample_size is the number of samples you need for labelling
-    # pool_size is the size of the unlabelled pool size data.get_ds_length('unlabelled')
+        # now you can get indices for samples to be labelled using the al_sampler methods 
 
-    print('Total Unlabelled Pool Size ', data.get_ds_length())
-    
-    random_indices= al_sampler.get_random_samples(pool_size=data.get_ds_length(),sample_size=20)
+        # get random samples 
+        # sample_size is the number of samples you need for labelling
+        # pool_size is the size of the unlabelled pool size data.get_ds_length('unlabelled')
+        unlabelled_data_size=data.get_ds_length()
+        if unlabelled_data_size>2000:
+            sample_size=0.25 * unlabelled_data_size
+        else:
+            sample_size=unlabelled_data_size    
+        print('Total Unlabelled Pool Size ', unlabelled_data_size)
+        print('Query Sample size ',sample_size)
 
-    print('Random indices for labelling : \n-----------------\n') 
-    print(random_indices)
-    print('\n-----------------\n') 
+        if sampling_method=='random':
+                
+            
+            new_indices= al_sampler.get_random_samples(pool_size=unlabelled_data_size,sample_size=sample_size)
+            '''
+            print('Random indices for labelling : \n-----------------\n') 
+            print(new_indices)
+            print('\n-----------------\n') 
+            '''
+        elif sampling_method=='least_confidence':
+                
+            # Get Least confidence samples 
+            #pass predictions and sample size as args
+            new_indices=al_sampler.get_least_confidence_samples(predictions,sample_size=sample_size)
+            '''
+            print('Least confidence query indices for labelling : \n-----------------\n') 
+            print(new_indices) 
+            print('\n-----------------\n')   
+            '''
 
-    # Get Least confidence samples 
-    #pass predictions and sample size as args
-    least_confidence_samples=al_sampler.get_least_confidence_samples(predictions,sample_size=20)
+        elif sampling_method=='margin':
+                
 
-    print('Least confidence query indices for labelling : \n-----------------\n') 
-    print(least_confidence_samples) 
-    print('\n-----------------\n')   
+            # Get Top 2 Margin samples 
+            #pass predictions and sample size as args
+            new_indices=al_sampler.get_top2_confidence_margin_samples(predictions,sample_size=sample_size) 
+            '''
+            print('Top2 confidence margin samples : \n-------------------\n')
+            print(new_indices)
+            print('\n-----------------\n')
+            '''
 
+        #adjust training set and unlabelled pool based on new queried indices 
 
-    # Get Top 2 Margin samples 
-    #pass predictions and sample size as args
-    margin_samples=al_sampler.get_top2_confidence_margin_samples(predictions,sample_size=20) 
+        data.expand_training_set(new_indices)
 
-    print('Top2 confidence margin samples : \n-------------------\n')
-    print(margin_samples)
-    print('\n-----------------\n')
+        # pylint: enable=no-member
 
-
-
-    # pylint: enable=no-member
-
-    # Hide lines below until Lab 5
-    best_model_path = model_checkpoint_callback.best_model_path
-    if best_model_path:
-        print("Best model saved at:", best_model_path)
-        if args.wandb:
-            wandb.save(best_model_path)
-            print("Best model also uploaded to W&B")
-    # Hide lines above until Lab 5
+        # Hide lines below until Lab 5
+        best_model_path = model_checkpoint_callback.best_model_path
+        if best_model_path:
+            print("Best model saved at:", best_model_path)
+            if args.wandb:
+                wandb.save(best_model_path)
+                print("Best model also uploaded to W&B")
+        # Hide lines above until Lab 5
 
 if __name__ == "__main__":
     main()

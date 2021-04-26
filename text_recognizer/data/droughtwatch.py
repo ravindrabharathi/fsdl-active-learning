@@ -87,6 +87,7 @@ class DroughtWatch(BaseDataModule):
         self.data_test = BaseDataset(self.x_pool, self.y_pool, transform=self.transform) 
         self.data_unlabelled=BaseDataset(self.x_pool, self.y_pool, transform=self.transform)
         
+        
 
 
     def __repr__(self):
@@ -115,6 +116,41 @@ class DroughtWatch(BaseDataModule):
             return len(self.data_val) #.__len__() 
         else:
             raise NameError('Unknown Dataset Name '+ds_name) 
+
+    def expand_training_set( sample_idxs, print_sizes=True):
+
+        #get x_train, y_train
+        x_train=self.data_train.x_train
+        y_train=self.data_train.y_train
+
+        #get unlabelled set
+        x_pool=self.data_unlabelled.x_pool
+        y_pool=self.data_unlabelled.y_pool
+
+        # get new training examples
+        x_train_new = x_pool[sample_idxs]
+        y_train_new = y_pool[sample_idxs]
+
+        # remove the new examples from the unlabelled pool
+        mask = np.ones(x_pool.shape[0], bool)
+        mask[sample_idxs] = False
+        x_pool = x_pool[mask]
+        y_pool = y_pool[mask]
+
+        # add new examples to training set
+        x_train = np.concatenate([x_train, x_train_new])
+        y_train = np.concatenate([y_train, y_train_new])
+
+        #form new datasets 
+        self.data_train=BaseDataset(self.x_train, self.y_train) # data is already transformed 
+        self.data_unlabelled=BaseDataset(self.x_pool, self.y_pool)
+        self.data_test=BaseDataset(self.x_pool,self.y_pool)
+
+        if print_sizes:
+            print(f"New training set size: {self.get_ds_length("train")}")
+            print(f"Remaining pool size: {self.get_ds_length("unlabelled")}")
+
+        return self.data_train,self.data_unlabelled       
 
 def _download_and_process_droughtwatch(self):
 

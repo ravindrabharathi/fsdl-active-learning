@@ -112,7 +112,7 @@ class DroughtWatch(BaseDataModule):
         x, y = next(iter(self.train_dataloader()))
         data = (
             f"Train/val sizes: {len(self.data_train)}, {len(self.data_val)}\n"
-            f"Batch x stats: {(x.shape, x.dtype, x.min(), x.mean(), x.std(), x.max())}\n"
+            f"Batch x stats: {(x.shape, x.dtype, x.min(), (x*1.0).mean(), (x*1.0).std(), x.max())}\n"
             f"Batch y stats: {(y.shape, y.dtype, y.min(), y.max())}\n"
             f"Pool size of labeled samples to do active learning from: {len(self.data_unlabelled)}\n"
         )
@@ -158,12 +158,9 @@ class DroughtWatch(BaseDataModule):
         self.x_train = np.concatenate([x_train, x_train_new])
         self.y_train = np.concatenate([y_train, y_train_new])
 
-        #form new datasets 
-        self.data_train=BaseDataset(self.x_train, self.y_train) # data is already transformed 
-        self.data_unlabelled=BaseDataset(self.x_pool, self.y_pool)
-        self.data_test=BaseDataset(self.x_pool,self.y_pool)
+        print()
 
-        return self.data_train,self.data_unlabelled       
+             
 
 def _download_and_process_droughtwatch(self):
 

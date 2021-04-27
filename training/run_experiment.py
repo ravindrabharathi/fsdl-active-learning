@@ -108,7 +108,8 @@ def main():
 
     args.weights_summary = "full"  # Print full summary of the model
     trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger, weights_save_path="training/logs")
-    #data.setup()
+    '''
+    data.setup()
     print('trainin loop start ---------')
     trainer.tune(lit_model, datamodule=data)
     print('after tune ---------')
@@ -117,6 +118,7 @@ def main():
     trainer.test(lit_model, datamodule=data)
     print('after test  ---------')
     print(data)
+    '''
     unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
 
     while (unlabelled_data_size>1000):

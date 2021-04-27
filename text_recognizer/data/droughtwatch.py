@@ -59,13 +59,15 @@ class DroughtWatch(BaseDataModule):
         self.transform = transforms.Compose([transforms.ToTensor()])
         self.dims = (1, len(self.bands), IMG_DIM, IMG_DIM) # tensor * no. bands * height * width
         self.output_dims = (1,)
+        self.prepare_data()
+        self.init_setup()
 
     def prepare_data(self, *args, **kwargs) -> None:
         if not (os.path.exists(PROCESSED_DATA_FILE_TRAINVAL) and os.path.exists(PROCESSED_DATA_FILE_POOL)):
             _download_and_process_droughtwatch(self)
-    
-    def setup(self, stage: str = None) -> None:
-        print("SETUP DATA CALLED  \n-------------\n")    
+
+    def init_setup(self):
+        print("INIT SETUP DATA CALLED  \n-------------\n")    
         with h5py.File(PROCESSED_DATA_FILE_TRAINVAL, "r") as f:
             self.x_train = f["x_train"][:]
             self.y_train = f["y_train"][:].squeeze().astype(int)
@@ -90,6 +92,14 @@ class DroughtWatch(BaseDataModule):
         print(self.data_unlabelled)
         print(self.data_train)
         print(self.data_val)
+
+
+    def setup(self, stage: str = None) -> None:
+
+        self.data_train = BaseDataset(self.x_train, self.y_train, transform=self.transform)
+        self.data_val = BaseDataset(self.x_val, self.y_val, transform=self.transform)
+        self.data_test = BaseDataset(self.x_pool, self.y_pool, transform=self.transform) 
+        self.data_unlabelled=BaseDataset(self.x_pool, self.y_pool, transform=self.transform)
         
 
 
@@ -141,12 +151,12 @@ class DroughtWatch(BaseDataModule):
         # remove the new examples from the unlabelled pool
         mask = np.ones(x_pool.shape[0], bool)
         mask[sample_idxs] = False
-        x_pool = x_pool[mask]
-        y_pool = y_pool[mask]
+        self.x_pool = x_pool[mask]
+        self.y_pool = y_pool[mask]
 
         # add new examples to training set
-        x_train = np.concatenate([x_train, x_train_new])
-        y_train = np.concatenate([y_train, y_train_new])
+        self.x_train = np.concatenate([x_train, x_train_new])
+        self.y_train = np.concatenate([y_train, y_train_new])
 
         #form new datasets 
         self.data_train=BaseDataset(self.x_train, self.y_train) # data is already transformed 

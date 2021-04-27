@@ -41,8 +41,8 @@ def _setup_parser():
     # Hide lines below until Lab 5
     parser.add_argument("--wandb", action="store_true", default=False)
     # Hide lines above until Lab 5
-    parser.add_argument("--data_class", type=str, default="DroughtWatch")
-    parser.add_argument("--model_class", type=str, default="ResnetClassifier")
+    parser.add_argument("--data_class", type=str, default="MNIST")
+    parser.add_argument("--model_class", type=str, default="MLP")
     parser.add_argument("--load_checkpoint", type=str, default=None)
     parser.add_argument("--sampling_method", type=str, default='random')
 
@@ -108,7 +108,7 @@ def main():
     trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger, weights_save_path="training/logs")
 
     trainer.tune(lit_model, datamodule=data)
-    
+    print(data)
     unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
 
     while (unlabelled_data_size>1000):

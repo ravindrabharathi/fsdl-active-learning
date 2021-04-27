@@ -106,6 +106,10 @@ class DroughtWatch(BaseDataModule):
         return basic + data
 
     def get_ds_length(self,ds_name='unlabelled'):
+        print(self)
+        print(self.data_unlabelled)
+        print(self.data_train)
+        print(self.data_val)
         if ds_name=='unlabelled':
             return len(self.data_unlabelled.data)
         elif ds_name=='train':

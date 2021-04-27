@@ -116,16 +116,16 @@ class DroughtWatch(BaseDataModule):
             return len(self.data_val) #.__len__() 
         else:
             raise NameError('Unknown Dataset Name '+ds_name) 
+           
 
-    def expand_training_set( sample_idxs, print_sizes=True):
+    def expand_training_set(self, sample_idxs):
 
         #get x_train, y_train
-        x_train=self.data_train.x_train
-        y_train=self.data_train.y_train
-
+        x_train=self.data_train.data
+        y_train=self.data_train.targets
         #get unlabelled set
-        x_pool=self.data_unlabelled.x_pool
-        y_pool=self.data_unlabelled.y_pool
+        x_pool=self.data_unlabelled.data
+        y_pool=self.data_unlabelled.targets
 
         # get new training examples
         x_train_new = x_pool[sample_idxs]
@@ -145,10 +145,6 @@ class DroughtWatch(BaseDataModule):
         self.data_train=BaseDataset(self.x_train, self.y_train) # data is already transformed 
         self.data_unlabelled=BaseDataset(self.x_pool, self.y_pool)
         self.data_test=BaseDataset(self.x_pool,self.y_pool)
-
-        if print_sizes:
-            print(f"New training set size: {self.get_ds_length("train")}")
-            print(f"Remaining pool size: {self.get_ds_length("unlabelled")}")
 
         return self.data_train,self.data_unlabelled       
 

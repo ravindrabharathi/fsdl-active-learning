@@ -107,7 +107,9 @@ def main():
     args.weights_summary = "full"  # Print full summary of the model
     trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger, weights_save_path="training/logs")
 
-    while data.get_ds_length(ds_name='unlabelled')>1000:
+    unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
+
+    while (unlabelled_data_size>1000:
 
         # pylint: disable=no-member
         trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate
@@ -125,7 +127,7 @@ def main():
         # get random samples 
         # sample_size is the number of samples you need for labelling
         # pool_size is the size of the unlabelled pool size data.get_ds_length('unlabelled')
-        unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
+        
         if unlabelled_data_size>2000:
             sample_size=0.25 * unlabelled_data_size
         else:
@@ -168,6 +170,7 @@ def main():
         #adjust training set and unlabelled pool based on new queried indices 
 
         data.expand_training_set(new_indices)
+        unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
 
         # pylint: enable=no-member
 

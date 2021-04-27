@@ -95,7 +95,7 @@ class DroughtWatch(BaseDataModule):
 
     def __repr__(self):
         basic = f"DroughtWatch Dataset\nDims: {self.dims}\n"
-        if self.data_train is None and self.data_val is None and self.data_test is None:
+        if self.data_train is None and self.data_val is None and self.data_test is None and self.data_unlabelled is None:
             return basic
 
         # deepcode ignore unguarded~next~call: <please specify a reason of ignoring this>
@@ -104,7 +104,7 @@ class DroughtWatch(BaseDataModule):
             f"Train/val sizes: {len(self.data_train)}, {len(self.data_val)}\n"
             f"Batch x stats: {(x.shape, x.dtype, x.min(), x.mean(), x.std(), x.max())}\n"
             f"Batch y stats: {(y.shape, y.dtype, y.min(), y.max())}\n"
-            f"Pool size of labeled samples to do active learning from: {len(self.data_pool)}\n"
+            f"Pool size of labeled samples to do active learning from: {len(self.data_unlabelled)}\n"
         )
         return basic + data
 

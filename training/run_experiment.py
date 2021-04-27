@@ -78,7 +78,9 @@ def main():
     args = parser.parse_args()
     data_class = _import_class(f"text_recognizer.data.{args.data_class}")
     model_class = _import_class(f"text_recognizer.models.{args.model_class}")
+    print('data defined -------')
     data = data_class(args)
+    print('after data defined ------')
     model = model_class(data_config=data.config(), args=args)
     sampling_method=args.sampling_method
 
@@ -107,9 +109,13 @@ def main():
     args.weights_summary = "full"  # Print full summary of the model
     trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger, weights_save_path="training/logs")
     #data.setup()
+    print('trainin loop start ---------')
     trainer.tune(lit_model, datamodule=data)
+    print('after tune ---------')
     trainer.fit(lit_model, datamodule=data)
+    print('after fit  ---------')
     trainer.test(lit_model, datamodule=data)
+    print('after test  ---------')
     print(data)
     unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
 

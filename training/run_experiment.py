@@ -106,7 +106,7 @@ def main():
     )
     callbacks = [early_stopping_callback, model_checkpoint_callback]
 
-    args.weights_summary = "full"  # Print full summary of the model
+    args.weights_summary = None  # Don't Print full summary of the model # "full"
     trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger, weights_save_path="training/logs")
     '''
     data.setup()
@@ -120,11 +120,12 @@ def main():
     print(data)
     '''
     unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
+    # pylint: disable=no-member
+    trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate
 
     while (unlabelled_data_size>1000):
 
-        # pylint: disable=no-member
-        trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate
+        
 
         trainer.fit(lit_model, datamodule=data)
         #reset predictions array of model 

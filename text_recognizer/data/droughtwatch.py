@@ -158,7 +158,12 @@ class DroughtWatch(BaseDataModule):
         self.x_train = np.concatenate([x_train, x_train_new])
         self.y_train = np.concatenate([y_train, y_train_new])
 
-        print()
+        self.data_train = BaseDataset(self.x_train, self.y_train, transform=self.transform)
+        self.data_test = BaseDataset(self.x_pool, self.y_pool, transform=self.transform) 
+        self.data_unlabelled=BaseDataset(self.x_pool, self.y_pool, transform=self.transform)
+        print(len(self.x_train),type(self.x_train))
+        print(len(self.x_pool),type(self.x_pool))
+        print(self)
 
              
 

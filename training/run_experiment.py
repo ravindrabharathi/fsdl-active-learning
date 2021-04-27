@@ -125,7 +125,7 @@ def main():
         # get random samples 
         # sample_size is the number of samples you need for labelling
         # pool_size is the size of the unlabelled pool size data.get_ds_length('unlabelled')
-        unlabelled_data_size=data.get_ds_length()
+        unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
         if unlabelled_data_size>2000:
             sample_size=0.25 * unlabelled_data_size
         else:

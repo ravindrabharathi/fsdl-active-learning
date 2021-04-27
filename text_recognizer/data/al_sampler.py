@@ -36,3 +36,19 @@ def get_top2_confidence_margin_samples(predictions, sample_size):
     least_margin_indices=indices[np.argsort(margins)][:sample_size]
   
     return least_margin_indices
+
+def get_top2_confidence_ratio_samples(predictions, sample_size):
+
+    
+    margins = []
+    indices = []
+        
+    for idx,predxn in enumerate(predictions):
+        predxn[::-1].sort()
+        margins.append(predxn[1]/predxn[0])
+        indices.append(idx)
+    margins=np.asarray(margins)
+    indices=np.asarray(indices)
+    confidence_ratio_indices=indices[np.argsort(margins)][:sample_size]
+  
+    return confidence_ratio_indices    

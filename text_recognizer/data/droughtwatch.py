@@ -107,13 +107,13 @@ class DroughtWatch(BaseDataModule):
 
     def get_ds_length(self,ds_name='unlabelled'):
         if ds_name=='unlabelled':
-            return len(self.data_unlabelled)
+            return self.data_unlabelled.__len__()
         elif ds_name=='train':
-            return len(self.data_train)
+            return self.data_train.__len__()
         elif ds_name=='test' :
-            return len(self.data_test)
+            return self.data_test.__len__()
         elif ds_name=='val' :
-            return len(self.data_val) #.__len__() 
+            return self.data_val.__len__() 
         else:
             raise NameError('Unknown Dataset Name '+ds_name) 
            

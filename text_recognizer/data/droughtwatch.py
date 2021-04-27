@@ -65,7 +65,7 @@ class DroughtWatch(BaseDataModule):
             _download_and_process_droughtwatch(self)
     
     def setup(self, stage: str = None) -> None:
-
+        print("SETUP DATA CALLED  \n-------------\n")    
         with h5py.File(PROCESSED_DATA_FILE_TRAINVAL, "r") as f:
             self.x_train = f["x_train"][:]
             self.y_train = f["y_train"][:].squeeze().astype(int)
@@ -86,7 +86,10 @@ class DroughtWatch(BaseDataModule):
 
         self.data_test = BaseDataset(self.x_pool, self.y_pool, transform=self.transform) 
         self.data_unlabelled=BaseDataset(self.x_pool, self.y_pool, transform=self.transform)
-        
+        print(self)
+        print(self.data_unlabelled)
+        print(self.data_train)
+        print(self.data_val)
         
 
 

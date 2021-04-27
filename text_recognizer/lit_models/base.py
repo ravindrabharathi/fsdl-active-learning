@@ -51,7 +51,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         self.train_acc = Accuracy()
         self.val_acc = Accuracy()
         self.test_acc = Accuracy()
-        self.predictions =[]
+        self.predictions=np.array([])
 
     @staticmethod
     def add_to_argparse(parser):

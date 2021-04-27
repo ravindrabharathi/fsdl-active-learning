@@ -109,7 +109,7 @@ def main():
 
     unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
 
-    while (unlabelled_data_size>1000:
+    while (unlabelled_data_size>1000):
 
         # pylint: disable=no-member
         trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate

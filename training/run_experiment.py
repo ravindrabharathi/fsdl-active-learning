@@ -107,7 +107,7 @@ def main():
     args.weights_summary = "full"  # Print full summary of the model
     trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger, weights_save_path="training/logs")
 
-    while data.get_ds_length()>1000:
+    while data.get_ds_length(ds_name='unlabelled')>1000:
 
         # pylint: disable=no-member
         trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate

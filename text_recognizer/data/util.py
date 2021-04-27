@@ -65,6 +65,9 @@ class BaseDataset(torch.utils.data.Dataset):
 
         return datum, target
 
+    def get_len(self):
+        return len(self.data)    
+
 
 def convert_strings_to_labels(strings: Sequence[str], mapping: Dict[str, int], length: int) -> torch.Tensor:
     """

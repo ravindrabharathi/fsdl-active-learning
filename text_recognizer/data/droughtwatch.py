@@ -287,8 +287,8 @@ def _process_raw_dataset(self, filename: str, dirname: Path):
             hf["y_pool"].resize((hf["y_pool"].shape[0] + y_pool.shape[0]), axis = 0)
             hf["y_pool"][-y_pool.shape[0]:] = y_pool
 
-    print(PROCESSED_DATA_FILE_POOL)
-    print(PROCESSED_DATA_FILE_TRAINVAL,PROCESSED_DATA_DIRNAME)
+    #print(PROCESSED_DATA_FILE_POOL)
+    #print(PROCESSED_DATA_FILE_TRAINVAL,PROCESSED_DATA_DIRNAME)
     print("Cleaning up...")
     shutil.rmtree("droughtwatch_data")
     os.chdir(curdir)

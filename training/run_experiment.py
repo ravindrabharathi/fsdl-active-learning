@@ -92,18 +92,19 @@ def main():
     else:
         lit_model = lit_model_class(args=args, model=model)
 
-    logger = pl.loggers.TensorBoardLogger("training/logs")
+    #logger = pl.loggers.TensorBoardLogger("training/logs")
     # Hide lines below until Lab 5
-    if args.wandb:
-        logger = pl.loggers.WandbLogger()
-        logger.watch(model)
-        logger.log_hyperparams(vars(args))
+    #if args.wandb:
+    logger = pl.loggers.WandbLogger(project='fsdl-active-learning', job_type='train')
+    logger.watch(model)
+    logger.log_hyperparams(vars(args))
     # Hide lines above until Lab 5
 
     early_stopping_callback = pl.callbacks.EarlyStopping(monitor="val_loss", mode="min", patience=10)
     model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
         filename="{epoch:03d}-{val_loss:.3f}-{val_cer:.3f}", monitor="val_loss", mode="min"
     )
+    
     callbacks = [early_stopping_callback, model_checkpoint_callback]
 
     args.weights_summary = None  # Don't Print full summary of the model # "full"

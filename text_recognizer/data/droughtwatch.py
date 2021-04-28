@@ -19,8 +19,8 @@ import numpy as np
 
 IMG_DIM = 65
 NUM_CLASSES = 4
-N_TRAIN = 20000
-N_VAL = 10000
+N_TRAIN = 22000 #approx 25% of available training samples
+N_VAL = 10778
 BANDS = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10', 'B11']
 
 RAW_DATA_DIRNAME = BaseDataModule.data_dirname() / "raw" / "droughtwatch"

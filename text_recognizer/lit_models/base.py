@@ -87,7 +87,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         return loss
 
     def validation_step(self, batch, batch_idx):  # pylint: disable=unused-argument
-        print('validating ')
+        #print('validating ')
         x, y = batch
         logits = self(x)
         loss = self.loss_fn(logits, y)
@@ -114,9 +114,12 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
 
     def training_epoch_end(self, outputs):
         print('training outputs ',outputs)
-        return outputs 
+        
 
     def validation_epoch_end(self, outputs):
         print('validation outputs ',outputs)
-        return outputs
+
+    def test_epoch_end(self, outputs):
+        print('validation outputs ',outputs)    
+        
 

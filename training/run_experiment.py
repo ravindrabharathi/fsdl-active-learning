@@ -95,7 +95,8 @@ def main():
     #logger = pl.loggers.TensorBoardLogger("training/logs")
     # Hide lines below until Lab 5
     #if args.wandb:
-    logger = pl.loggers.WandbLogger(project='fsdl-active-learning', job_type='train')
+    project_name='fsdl-active-learning_'+sampling_method
+    logger = pl.loggers.WandbLogger(name='fsdl-active-learning',project=project_name, job_type='train')
     logger.watch(model)
     logger.log_hyperparams(vars(args))
     # Hide lines above until Lab 5

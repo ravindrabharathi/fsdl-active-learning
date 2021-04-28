@@ -116,7 +116,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
     def training_epoch_end(self, outputs):
         self.log("train_set_size",len(outputs))
         
-
+    '''
     def validation_epoch_end(self, outputs):
         #print('validation outputs ',outputs)
 

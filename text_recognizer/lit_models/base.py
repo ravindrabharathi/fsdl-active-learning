@@ -112,14 +112,15 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         self.test_acc(logits, y)
         self.log("test_acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=False)
 
+    '''
     def training_epoch_end(self, outputs):
-        print('training outputs ',outputs)
+        #print('training outputs ',outputs)
         
 
     def validation_epoch_end(self, outputs):
-        print('validation outputs ',outputs)
+        #print('validation outputs ',outputs)
 
     def test_epoch_end(self, outputs):
-        print('validation outputs ',outputs)    
-        
+        #print('test outputs ',outputs)    
+    '''    
 

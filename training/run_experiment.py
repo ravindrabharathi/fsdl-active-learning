@@ -41,8 +41,8 @@ def _setup_parser():
     # Hide lines below until Lab 5
     parser.add_argument("--wandb", action="store_true", default=False)
     # Hide lines above until Lab 5
-    parser.add_argument("--data_class", type=str, default="MNIST")
-    parser.add_argument("--model_class", type=str, default="MLP")
+    parser.add_argument("--data_class", type=str, default="DroughtWatch")
+    parser.add_argument("--model_class", type=str, default="ResnetClassifier")
     parser.add_argument("--load_checkpoint", type=str, default=None)
     parser.add_argument("--sampling_method", type=str, default='random')
 
@@ -108,17 +108,7 @@ def main():
 
     args.weights_summary = None  # Don't Print full summary of the model # "full"
     trainer = pl.Trainer.from_argparse_args(args, callbacks=callbacks, logger=logger, weights_save_path="training/logs")
-    '''
-    data.setup()
-    print('trainin loop start ---------')
-    trainer.tune(lit_model, datamodule=data)
-    print('after tune ---------')
-    trainer.fit(lit_model, datamodule=data)
-    print('after fit  ---------')
-    trainer.test(lit_model, datamodule=data)
-    print('after test  ---------')
-    print(data)
-    '''
+    
     unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
     # pylint: disable=no-member
     trainer.tune(lit_model, datamodule=data)  # If passing --auto_lr_find, this will set learning rate

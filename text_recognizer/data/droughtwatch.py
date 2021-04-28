@@ -88,10 +88,7 @@ class DroughtWatch(BaseDataModule):
 
         self.data_test = BaseDataset(self.x_pool, self.y_pool, transform=self.transform) 
         self.data_unlabelled=BaseDataset(self.x_pool, self.y_pool, transform=self.transform)
-        print(self)
-        print(self.data_unlabelled)
-        print(self.data_train)
-        print(self.data_val)
+        
 
 
     def setup(self, stage: str = None) -> None:
@@ -119,10 +116,7 @@ class DroughtWatch(BaseDataModule):
         return basic + data
 
     def get_ds_length(self,ds_name='unlabelled'):
-        print(self)
-        print(self.data_unlabelled)
-        print(self.data_train)
-        print(self.data_val)
+        
         if ds_name=='unlabelled':
             return len(self.data_unlabelled.data)
         elif ds_name=='train':
@@ -161,9 +155,9 @@ class DroughtWatch(BaseDataModule):
         self.data_train = BaseDataset(self.x_train, self.y_train, transform=self.transform)
         self.data_test = BaseDataset(self.x_pool, self.y_pool, transform=self.transform) 
         self.data_unlabelled=BaseDataset(self.x_pool, self.y_pool, transform=self.transform)
-        print(len(self.x_train),type(self.x_train))
-        print(len(self.x_pool),type(self.x_pool))
-        print(self)
+        print(' New train set size ',len(self.x_train))
+        print('New unlabelled pool size ',len(self.x_pool))
+        
 
              
 

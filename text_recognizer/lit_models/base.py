@@ -96,7 +96,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         self.log("val_acc", self.val_acc, on_step=False, on_epoch=True, prog_bar=False)
 
     def reset_predictions(self):
-        print('Resetting Predictions')
+        print('\nResetting Predictions\n')
         self.predictions=np.array([])    
 
     def test_step(self, batch, batch_idx):  # pylint: disable=unused-argument

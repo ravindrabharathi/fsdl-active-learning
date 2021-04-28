@@ -177,7 +177,7 @@ def main():
         unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
 
         # pylint: enable=no-member
-
+        '''
         # Hide lines below until Lab 5
         best_model_path = model_checkpoint_callback.best_model_path
         if best_model_path:
@@ -186,6 +186,8 @@ def main():
                 wandb.save(best_model_path)
                 print("Best model also uploaded to W&B")
         # Hide lines above until Lab 5
+        '''
+    wandb.finish()    
 
 if __name__ == "__main__":
     main()

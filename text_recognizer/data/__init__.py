@@ -1,5 +1,6 @@
 from .util import BaseDataset
 from .base_data_module import BaseDataModule
+'''
 from .mnist import MNIST
 
 # Hide lines below until Lab 2
@@ -24,6 +25,6 @@ from .iam_original_and_synthetic_paragraphs import IAMOriginalAndSyntheticParagr
 from .fake_images import FakeImageData
 
 # Hide lines above until Lab 8
-
+'''
 # added by active-learning-project
 from .droughtwatch import DroughtWatch

@@ -1,3 +1,4 @@
+'''
 from .mlp import MLP
 
 # Hide lines below until Lab 2
@@ -21,6 +22,6 @@ from .line_cnn_transformer import LineCNNTransformer
 from .resnet_transformer import ResnetTransformer
 
 # Hide lines above until Lab 7
-
+'''
 # added by active-learning-project
 from .resnet_classifier import ResnetClassifier

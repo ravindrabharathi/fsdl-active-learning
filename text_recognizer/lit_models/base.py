@@ -42,8 +42,11 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         self.lr = self.args.get("lr", LR)
 
         loss = self.args.get("loss", LOSS)
+        self.loss_fn = getattr(torch.nn.functional, loss)
+        '''
         if loss not in ("ctc", "transformer"):
             self.loss_fn = getattr(torch.nn.functional, loss)
+        '''    
 
         self.one_cycle_max_lr = self.args.get("one_cycle_max_lr", None)
         self.one_cycle_total_steps = self.args.get("one_cycle_total_steps", ONE_CYCLE_TOTAL_STEPS)

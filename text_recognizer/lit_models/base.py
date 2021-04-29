@@ -97,7 +97,8 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
 
     def reset_predictions(self):
         print('\nResetting Predictions\n')
-        self.predictions=np.array([])    
+        self.predictions=np.array([]) 
+        self.total_predictions=np.array([])   
 
     def test_step(self, batch, batch_idx):  # pylint: disable=unused-argument
         x, y = batch
@@ -109,12 +110,23 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
             self.predictions=preds.cpu().detach().numpy()
         else:    
             np.vstack([self.predictions,preds.cpu().detach().numpy()])
+
         self.test_acc(logits, y)
         self.log("test_acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=False)
 
+    def test_batch_end(self,outputs):
+        print('test batch end ')
+        if self.total_predictions.shape[0]==0:
+            self.total_predictions=self.predictions
+        else:    
+            np.vstack([self.total_predictions,self.predictions])
     
+    def training_epoch_start(self):
+        self.train_size=0
+    def training_batch_end(self,outputs):
+        self.train_size +=len(outputs)
     def training_epoch_end(self, outputs):
-        self.log("train_set_size",len(outputs))
+        self.log("train_set_size",self.train_size)
         
     '''
     def validation_epoch_end(self, outputs):

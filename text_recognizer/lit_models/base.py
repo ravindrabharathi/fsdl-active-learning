@@ -115,19 +115,22 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         self.test_acc(logits, y)
         self.log("test_acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=False)
 
-    def test_batch_end(self,outputs):
+    def on_test_batch_end(self,outputs, batch, batch_idx, dataloader_idx):
         print('test batch end ')
         if self.total_predictions.shape[0]==0:
             self.total_predictions=self.predictions
         else:    
             np.vstack([self.total_predictions,self.predictions])
+
+    def on_test_epoch_end(self,outputs):
+        print('test epoch end ', type(outputs))        
     
-    def training_epoch_start(self):
+    def on_train_epoch_start(self):
         print('epoch start')
         self.train_size=0
         print('train size=',self.train_size)
 
-    def training_batch_end(self,outputs):
+    def on_train_batch_end(self,outputs):
         self.train_size +=len(outputs)
         print('train batch end , train size =', self.train_size)
 

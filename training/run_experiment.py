@@ -78,9 +78,9 @@ def main():
     args = parser.parse_args()
     data_class = _import_class(f"text_recognizer.data.{args.data_class}")
     model_class = _import_class(f"text_recognizer.models.{args.model_class}")
-    print('data defined -------')
+    
     data = data_class(args)
-    print('after data defined ------')
+    
     model = model_class(data_config=data.config(), args=args)
     sampling_method=args.sampling_method
 
@@ -126,7 +126,7 @@ def main():
         trainer.test(lit_model, datamodule=data)
         #get model predictions 
         predictions = lit_model.predictions # maybe use a getPredictions method instead of referencing directly
-        print('predictions =',predictions)
+        
         # now you can get indices for samples to be labelled using the al_sampler methods 
 
         # get random samples 
@@ -174,7 +174,7 @@ def main():
             '''
 
         #adjust training set and unlabelled pool based on new queried indices 
-        print('size of new indices =',type(new_indices))
+        
         data.expand_training_set(new_indices)
         unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
 

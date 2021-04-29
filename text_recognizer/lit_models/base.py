@@ -99,54 +99,21 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
     def reset_predictions(self):
         print('\nResetting Predictions\n')
         self.predictions=np.array([]) 
-        self.total_predictions=np.array([])   
+         
 
     def test_step(self, batch, batch_idx):  # pylint: disable=unused-argument
         x, y = batch
         logits = self(x)
         
         preds = torch.nn.functional.softmax(logits, dim=-1)
-        print('batch idx',batch_idx)
-        print('prd shape 0',self.predictions.shape[0])
+        
         if self.predictions.shape[0]==0:
             self.predictions=preds.cpu().detach().numpy()
         else:  
-            print('stacking',self.predictions,preds.cpu().detach().numpy())  
+              
             self.predictions=np.vstack([self.predictions,preds.cpu().detach().numpy()])
 
         self.test_acc(logits, y)
         self.log("test_acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=False)
-    '''
-    def on_test_batch_end(self,outputs, batch, batch_idx, dataloader_idx):
-        print('test batch end ')
-        if self.total_predictions.shape[0]==0:
-            self.total_predictions=self.predictions
-        else:    
-            np.vstack([self.total_predictions,self.predictions])
-
-    def on_test_epoch_end(self,outputs):
-        print('test epoch end ', type(outputs))        
-    
-    def on_train_epoch_start(epoch):
-        print('epoch start ',epoch)
-        train_size=0
-        print('train size=',train_size)
-
-    def on_train_batch_end(epoch_output, batch_end_outputs, batch, batch_idx, dataloader_idx):
-        train_size +=len(batch_end_outputs)
-        
-        print('train batch end , train size =', train_size)
-
-    def training_epoch_end(self, outputs):
-        print('train epoch ended')
-        ts=self.train_size
-        self.log("train_set_size",ts)
-        
-    
-    def validation_epoch_end(self, outputs):
-        #print('validation outputs ',outputs)
-
-    def test_epoch_end(self, outputs):
-        #print('test outputs ',outputs)    
-    '''    
+      
 

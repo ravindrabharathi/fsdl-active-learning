@@ -18,8 +18,10 @@ def get_least_confidence_samples(predictions, sample_size):
             
     conf = np.asarray(conf)
     indices = np.asarray(indices)
+    result=indices[np.argsort(conf)][:sample_size]
+    
         
-    return indices[np.argsort(conf)][:sample_size]
+    return result
 
 def get_top2_confidence_margin_samples(predictions, sample_size):
 

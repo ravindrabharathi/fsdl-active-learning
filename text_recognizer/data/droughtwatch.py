@@ -142,11 +142,15 @@ class DroughtWatch(BaseDataModule):
         x_train_new = x_pool[sample_idxs]
         y_train_new = y_pool[sample_idxs]
 
+        print('x-train_new size',len(x_train_new))
+        print('len of sample ids',len(sample_idxs))
+
         # remove the new examples from the unlabelled pool
         mask = np.ones(x_pool.shape[0], bool)
         mask[sample_idxs] = False
         self.x_pool = x_pool[mask]
         self.y_pool = y_pool[mask]
+
 
         # add new examples to training set
         self.x_train = np.concatenate([x_train, x_train_new])

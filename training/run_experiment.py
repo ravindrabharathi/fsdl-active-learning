@@ -96,7 +96,7 @@ def main():
     # Hide lines below until Lab 5
     #if args.wandb:
     project_name='fsdl-active-learning_'+sampling_method
-    logger = pl.loggers.WandbLogger(name='fsdl-active-learning',project=project_name, job_type='train')
+    logger = pl.loggers.WandbLogger(name=project_name,project='fsdl-active-learning', job_type='train')
     logger.watch(model)
     logger.log_hyperparams(vars(args))
     # Hide lines above until Lab 5
@@ -154,6 +154,7 @@ def main():
             # Get Least confidence samples 
             #pass predictions and sample size as args
             new_indices=al_sampler.get_least_confidence_samples(predictions,sample_size=sample_size)
+            
             '''
             print('Least confidence query indices for labelling : \n-----------------\n') 
             print(new_indices) 
@@ -173,7 +174,7 @@ def main():
             '''
 
         #adjust training set and unlabelled pool based on new queried indices 
-
+        print('size of new indices =',len(new_indices))
         data.expand_training_set(new_indices)
         unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
 

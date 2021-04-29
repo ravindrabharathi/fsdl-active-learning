@@ -174,7 +174,7 @@ def main():
             '''
 
         #adjust training set and unlabelled pool based on new queried indices 
-        print('size of new indices =',len(new_indices))
+        print('size of new indices =',type(new_indices))
         data.expand_training_set(new_indices)
         unlabelled_data_size=data.get_ds_length(ds_name='unlabelled')
 

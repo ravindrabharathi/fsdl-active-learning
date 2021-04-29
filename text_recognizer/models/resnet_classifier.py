@@ -65,14 +65,13 @@ class ResnetClassifier(nn.Module):
 
         # adapting the no. of output classes in the model's fully-connected layer
         #self.resnet.fc = nn.Linear(self.resnet.fc.in_features, n_classes) 
-        self.resnet.fc = nn.Sequential(
-            nn.Linear(self.resnet.fc.in_features, self.resnet.fc.in_features), # additional fc layer
-            nn.BatchNorm1d(self.resnet.fc.in_features), # adding batchnorm
-            nn.ReLU(), # additional nonlinearity
-            
-            nn.Linear(self.resnet.fc.in_features, n_classes) # same fc layer as we had before
-        )   
+        self.resnet.fc = nn.Sequential(
+            nn.Linear(self.resnet.fc.in_features,self.resnet.fc.in_features),
+            nn.BatchNorm1d(self.resnet.fc.in_features),
+            nn.ReLU(),
 
+            nn.Linear(self.resnet.fc.in_features,n_classes)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """

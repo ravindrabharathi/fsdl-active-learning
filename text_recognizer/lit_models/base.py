@@ -106,7 +106,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         logits = self(x)
         
         preds = torch.nn.functional.softmax(logits, dim=-1)
-        
+        print('prd shape 0',self.predictions.shape[0])
         if self.predictions.shape[0]==0:
             self.predictions=preds.cpu().detach().numpy()
         else:    
@@ -123,11 +123,17 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
             np.vstack([self.total_predictions,self.predictions])
     
     def training_epoch_start(self):
+        print('epoch start')
         self.train_size=0
+        print('train size=',self.train_size)
+
     def training_batch_end(self,outputs):
         self.train_size +=len(outputs)
+        print('train batch end , train size =', self.train_size)
+
     def training_epoch_end(self, outputs):
-        self.log("train_set_size",self.train_size)
+        ts=self.train_size
+        self.log("train_set_size",ts)
         
     '''
     def validation_epoch_end(self, outputs):

@@ -125,16 +125,18 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
     def on_test_epoch_end(self,outputs):
         print('test epoch end ', type(outputs))        
     
-    def on_train_epoch_start(self):
-        print('epoch start')
+    def on_train_epoch_start(self, epoch):
+        print('epoch start ',epoch)
         self.train_size=0
         print('train size=',self.train_size)
 
-    def on_train_batch_end(self,outputs):
-        self.train_size +=len(outputs)
+    def on_train_batch_end(self, epoch_output, batch_end_outputs, batch, batch_idx, dataloader_idx):
+        self.train_size +=len(batch_end_outputs)
+        
         print('train batch end , train size =', self.train_size)
 
     def training_epoch_end(self, outputs):
+        print('train epoch ended')
         ts=self.train_size
         self.log("train_set_size",ts)
         

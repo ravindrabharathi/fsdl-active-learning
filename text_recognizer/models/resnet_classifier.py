@@ -35,8 +35,7 @@ class ResnetClassifier(nn.Module):
                 new_channel_std, new_channel_std, new_channel_std, new_channel_std, new_channel_std, new_channel_std, new_channel_std, new_channel_std]),
         ])
 
-        # adapting the no. of output classes in the model's fully-connected layer
-        self.resnet.fc = nn.Linear(self.resnet.fc.in_features, n_classes)
+        
 
         # adapting the no. of input channels to the first conv layer 
         # (adapted from https://discuss.pytorch.org/t/how-to-modify-the-input-channels-of-a-resnet-model/2623/10)
@@ -60,6 +59,19 @@ class ResnetClassifier(nn.Module):
         new_layer.weight = nn.Parameter(new_layer.weight)
 
         self.resnet.conv1 = new_layer
+
+        for param in self.resnet.parameters():
+            param.requires_grad = False
+
+        # adapting the no. of output classes in the model's fully-connected layer
+        #self.resnet.fc = nn.Linear(self.resnet.fc.in_features, n_classes) 
+        self.resnet.fc = nn.Sequential(
+            nn.Linear(self.resnet.fc.in_features, self.resnet.fc.in_features), # additional fc layer
+            nn.BatchNorm1d(self.resnet.fc.in_features), # adding batchnorm
+            nn.ReLU(), # additional nonlinearity
+            
+            nn.Linear(self.resnet.fc.in_features, n_classes) # same fc layer as we had before
+        )   
 
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:

@@ -126,7 +126,7 @@ def main():
         trainer.test(lit_model, datamodule=data)
         #get model predictions 
         predictions = lit_model.total_predictions # maybe use a getPredictions method instead of referencing directly
-        print('length of predictions =',predictions.shape(0))
+        print('predictions =',predictions)
         # now you can get indices for samples to be labelled using the al_sampler methods 
 
         # get random samples 

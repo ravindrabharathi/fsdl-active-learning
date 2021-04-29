@@ -106,7 +106,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         logits = self(x)
         
         preds = torch.nn.functional.softmax(logits, dim=-1)
-        print('prd shape 0',self.predictions.shape[0])
+        #print('prd shape 0',self.predictions.shape[0])
         if self.predictions.shape[0]==0:
             self.predictions=preds.cpu().detach().numpy()
         else:    

@@ -4,8 +4,12 @@ import torch
 def get_random_samples(pool_size,sample_size):
     
     #return sample size of random indices 
-    
-    return np.random.randint(pool_size, size=sample_size)
+    if pool_size<=2000:
+        indices=[x for x in range(pool_size)]  #return complete pool size 
+    else:
+        indices=np.random.randint(pool_size, size=sample_size)
+
+    return indices
 
 def get_least_confidence_samples(predictions, sample_size):
 

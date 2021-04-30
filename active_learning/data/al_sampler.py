@@ -68,7 +68,7 @@ def get_entropy_samples(predictions,sample_size):
         entropy=-np.sum(pxlog2p)/np.log2(n)
         entropies.append(entropy)
         indices.append(idx)
-  entropies=np.asarray(entropies)
-  indices=np.asarray(indices)
-  max_entropy_indices=np.argsort(entropies)[-sample_size:]  
-  return max_entropy_indices     
+    entropies=np.asarray(entropies)
+    indices=np.asarray(indices)
+    max_entropy_indices=np.argsort(entropies)[-sample_size:]  
+    return max_entropy_indices     

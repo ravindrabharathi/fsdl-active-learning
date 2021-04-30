@@ -13,7 +13,9 @@ def get_least_confidence_samples(predictions, sample_size):
     indices = []
     for idx,prediction in enumerate(predictions):
         most_confident = np.max(prediction)
-        conf.append(most_confident)
+        n_classes=prediction.shape[0]
+        conf_score=(1-most_confident)*n_classes/(n_classes-1)
+        conf.append(conf_score)
         indices.append(idx)
             
     conf = np.asarray(conf)
@@ -31,7 +33,8 @@ def get_top2_confidence_margin_samples(predictions, sample_size):
         
     for idx,predxn in enumerate(predictions):
         predxn[::-1].sort()
-        margins.append(predxn[0]-predxn[1])
+        margin=predxn[0]-predxn[1]
+        margins.append(margin)
         indices.append(idx)
     margins=np.asarray(margins)
     indices=np.asarray(indices)
@@ -53,4 +56,19 @@ def get_top2_confidence_ratio_samples(predictions, sample_size):
     indices=np.asarray(indices)
     confidence_ratio_indices=indices[np.argsort(margins)][:sample_size]
   
-    return confidence_ratio_indices    
+    return confidence_ratio_indices 
+
+def get_entropy_samples(predictions,sample_size):
+    scores = []
+    indices = []
+    for idx,predxn in enumerate(predictions):
+        log2p=np.log2(predxn)
+        pxlog2p=predxn * log2p
+        n=len(predxn)
+        entropy=-np.sum(pxlog2p)/np.log2(n)
+        entropies.append(entropy)
+        indices.append(idx)
+  entropies=np.asarray(entropies)
+  indices=np.asarray(indices)
+  max_entropy_indices=np.argsort(entropies)[-sample_size:]  
+  return max_entropy_indices     

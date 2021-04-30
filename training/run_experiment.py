@@ -172,6 +172,15 @@ def main():
             print(new_indices)
             print('\n-----------------\n')
             '''
+        elif sampling_method=='margin_ratio':
+                       
+            new_indices=al_sampler.get_top2_confidence_ratio_samples(predictions,sample_size=sample_size) 
+
+        elif sampling_method=='entropy':
+                       
+            new_indices=al_sampler.get_entropy_samples(predictions,sample_size=sample_size)     
+
+
 
         #adjust training set and unlabelled pool based on new queried indices 
         

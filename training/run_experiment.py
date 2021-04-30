@@ -172,7 +172,7 @@ def main():
             print(new_indices)
             print('\n-----------------\n')
             '''
-        elif sampling_method=='margin_ratio':
+        elif sampling_method=='ratio':
                        
             new_indices=al_sampler.get_top2_confidence_ratio_samples(predictions,sample_size=sample_size) 
 

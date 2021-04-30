@@ -63,7 +63,7 @@ def get_top2_confidence_ratio_samples(predictions, sample_size):
     return confidence_ratio_indices 
 
 def get_entropy_samples(predictions,sample_size):
-    scores = []
+    entropies = []
     indices = []
     for idx,predxn in enumerate(predictions):
         log2p=np.log2(predxn)

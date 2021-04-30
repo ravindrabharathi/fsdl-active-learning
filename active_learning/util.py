@@ -1,4 +1,4 @@
-"""Utility functions for text_recognizer module."""
+"""Utility functions for active_learning module."""
 from pathlib import Path
 from typing import Union
 from urllib.request import urlretrieve

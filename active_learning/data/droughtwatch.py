@@ -10,8 +10,8 @@ from torchvision import transforms
 import h5py
 import toml
 
-from text_recognizer.data.base_data_module import _download_raw_dataset, BaseDataModule, load_and_print_info
-from text_recognizer.data.util import BaseDataset
+from active_learning.data.base_data_module import _download_raw_dataset, BaseDataModule, load_and_print_info
+from active_learning.data.util import BaseDataset
 
 import tensorflow as tf
 import random

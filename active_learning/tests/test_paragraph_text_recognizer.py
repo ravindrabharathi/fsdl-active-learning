@@ -1,10 +1,10 @@
-"""Test for paragraph_text_recognizer module."""
+"""Test for paragraph_active_learning module."""
 import os
 import json
 from pathlib import Path
 import time
 import editdistance
-from text_recognizer.paragraph_text_recognizer import ParagraphTextRecognizer
+from active_learning.paragraph_active_learning import ParagraphTextRecognizer
 
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
@@ -17,7 +17,7 @@ _SUPPORT_DIRNAME = _FILE_DIRNAME / "support" / "paragraphs"
 _NUM_MAX_SAMPLES = 1 if os.environ.get("CIRCLECI", False) else 100
 
 
-def test_paragraph_text_recognizer():
+def test_paragraph_active_learning():
     """Test ParagraphTextRecognizer."""
     support_filenames = list(_SUPPORT_DIRNAME.glob("*.png"))
     with open(_SUPPORT_DIRNAME / "data_by_file_id.json", "r") as f:
@@ -28,7 +28,7 @@ def test_paragraph_text_recognizer():
             break
         expected_text = support_data_by_file_id[support_filename.stem]["predicted_text"]
         start_time = time.time()
-        predicted_text = _test_paragraph_text_recognizer(support_filename, expected_text)
+        predicted_text = _test_paragraph_active_learning(support_filename, expected_text)
         end_time = time.time()
         time_taken = round(end_time - start_time, 2)
 
@@ -36,10 +36,10 @@ def test_paragraph_text_recognizer():
         print(f"Character error rate is {round(cer, 3)} for file {support_filename.name} (time taken: {time_taken}s)")
 
 
-def _test_paragraph_text_recognizer(image_filename: Path, expected_text: str):
+def _test_paragraph_active_learning(image_filename: Path, expected_text: str):
     """Test ParagraphTextRecognizer on 1 image."""
-    text_recognizer = ParagraphTextRecognizer()
-    predicted_text = text_recognizer.predict(image_filename)
+    active_learning = ParagraphTextRecognizer()
+    predicted_text = active_learning.predict(image_filename)
     assert predicted_text == expected_text, f"predicted text does not match expected for {image_filename.name}"
     return predicted_text
 

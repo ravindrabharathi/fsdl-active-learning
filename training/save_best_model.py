@@ -20,7 +20,7 @@ import wandb
 
 
 FILE_NAME = Path(__file__).resolve()
-ARTIFACTS_BASE_DIRNAME = FILE_NAME.parents[1] / "text_recognizer" / "artifacts"
+ARTIFACTS_BASE_DIRNAME = FILE_NAME.parents[1] / "active_learning" / "artifacts"
 TRAINING_LOGS_DIRNAME = FILE_NAME.parent / "logs"
 
 
@@ -61,7 +61,7 @@ def _get_artifacts_dirname(trained_data_class: str) -> Path:
     """Return artifacts dirname."""
     for keyword in ["line", "paragraph"]:
         if keyword in trained_data_class.lower():
-            artifacts_dirname = ARTIFACTS_BASE_DIRNAME / f"{keyword}_text_recognizer"
+            artifacts_dirname = ARTIFACTS_BASE_DIRNAME / f"{keyword}_active_learning"
             artifacts_dirname.mkdir(parents=True, exist_ok=True)
             break
     return artifacts_dirname

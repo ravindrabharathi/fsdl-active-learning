@@ -10,8 +10,8 @@ import h5py
 from PIL import Image
 
 
-from text_recognizer import lit_models
-from text_recognizer.data import al_sampler # for active learning sampling 
+from active_learning import lit_models
+from active_learning.data import al_sampler # for active learning sampling 
 from torch.utils.data import ConcatDataset, DataLoader
 
 
@@ -21,7 +21,7 @@ torch.manual_seed(42)
 
 
 def _import_class(module_and_class_name: str) -> type:
-    """Import class from a module, e.g. 'text_recognizer.models.MLP'"""
+    """Import class from a module, e.g. 'active_learning.models.MLP'"""
     module_name, class_name = module_and_class_name.rsplit(".", 1)
     module = importlib.import_module(module_name)
     class_ = getattr(module, class_name)
@@ -48,8 +48,8 @@ def _setup_parser():
 
     # Get the data and model classes, so that we can add their specific arguments
     temp_args, _ = parser.parse_known_args()
-    data_class = _import_class(f"text_recognizer.data.{temp_args.data_class}")
-    model_class = _import_class(f"text_recognizer.models.{temp_args.model_class}")
+    data_class = _import_class(f"active_learning.data.{temp_args.data_class}")
+    model_class = _import_class(f"active_learning.models.{temp_args.model_class}")
 
     # Get data, model, and LitModel specific arguments
     data_group = parser.add_argument_group("Data Args")
@@ -76,8 +76,8 @@ def main():
     """
     parser = _setup_parser()
     args = parser.parse_args()
-    data_class = _import_class(f"text_recognizer.data.{args.data_class}")
-    model_class = _import_class(f"text_recognizer.models.{args.model_class}")
+    data_class = _import_class(f"active_learning.data.{args.data_class}")
+    model_class = _import_class(f"active_learning.models.{args.model_class}")
     
     data = data_class(args)
     

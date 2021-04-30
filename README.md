@@ -8,9 +8,9 @@ This repository builds upon the template of **lab 08** of the [Full Stack Deep L
 
 ## Relevant Changes Compared to Lab Template
 
-[text_recognizer/data/droughtwatch.py](./text_recognizer/data/droughtwatch.py): Downloads data from the [W&B Drought Prediction Benchmark](https://github.com/wandb/droughtwatch) and converts it to HDF5 format which can be used by PyTorch for training and inference.
+[active_learning/data/droughtwatch.py](./active_learning/data/droughtwatch.py): Downloads data from the [W&B Drought Prediction Benchmark](https://github.com/wandb/droughtwatch) and converts it to HDF5 format which can be used by PyTorch for training and inference.
 
-[text_recognizer/models/resnet_classifier.py](./text_recognizer/models/resnet_classifier.py): Implements a PyTorch ResNet model for image classification, with adapted preprocessing steps (image resizing) and class outputs (4 instead of 1000). The model can be used for transfer learning on the drought prediction data.
+[active_learning/models/resnet_classifier.py](./active_learning/models/resnet_classifier.py): Implements a PyTorch ResNet model for image classification, with adapted preprocessing steps (image resizing) and class outputs (4 instead of 1000). The model can be used for transfer learning on the drought prediction data.
 
 ## Quickstart
 

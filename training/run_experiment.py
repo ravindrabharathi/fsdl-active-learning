@@ -120,7 +120,8 @@ def main():
         
         
         trainer.fit(lit_model, datamodule=data)
-        print(trainer.datamodule)
+        print('train length',trainer.datamodule.get_ds_length('train'))
+        
         
         #reset predictions array of model 
         lit_model.reset_predictions()

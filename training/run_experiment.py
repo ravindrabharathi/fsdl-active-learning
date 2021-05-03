@@ -118,8 +118,10 @@ def main():
     while (unlabelled_data_size>1000):
 
         
-
+        
         trainer.fit(lit_model, datamodule=data)
+        print(trainer.datamodule)
+        
         #reset predictions array of model 
         lit_model.reset_predictions()
         #run a test loop so that we can get the model predictions 
